@@ -3,4 +3,4 @@
 ini_set('display_errors', 1);
 
 //let's get started
-require 'application/tinyMvc.php'
+require 'application/tinyMvc.php';

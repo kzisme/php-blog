@@ -10,12 +10,14 @@ class Controller {
 		$this->model = new Model();
 
 		//determines what page you're on
-		$this->home()
+		$this->home();
 	}
 
 	function home()
 	{
-		$data = $this-model->user_info();
-		$this->load->('someview.php', $data);
+		$data = $this->model->user_info();
+		$this->load->view('someview.php', $data);
 	}
+	
+	
 }

@@ -49,12 +49,10 @@ class TinyMVC{
 		// to set a static variable from an instance,
 		// use the scope operator, ::
 		
-		self::$tiny = $this;
-		
-		
 		
 		$this->config = $this->load_config();
 		
+		self::$tiny = $this;
 	}
 	
 	/**
@@ -109,13 +107,10 @@ class TinyMVC{
 	 */
 	
 	private function load_config(){
-		include_once BASE_DIR . "/application/config/config.php";
-		global $config;
+		require BASE_DIR . "/application/config/config.php";
 		
 		$this->config = $config;
 		
-		// remove gloabl $config variable
-		unset($config);
 	}
 	
 	/**
@@ -127,7 +122,11 @@ class TinyMVC{
 	 * @return instanceof $key | boolean
 	 */
 	 
-	 public function config( $key = null, $value = null ){
+	 public function conf( $key = null, $value = null ){
+	 	
+		// this is weird. Gotta figure this out.
+		$this->load_config();
+		
 	 	$num_args = func_num_args();
 		
 		$key_parts = explode("/", $key);

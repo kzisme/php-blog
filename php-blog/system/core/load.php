@@ -20,12 +20,8 @@ class Load{
 	
 	public function __construct(){
 		
-		// set tiny to the instance of the TinyMVC loaded earlier
-		// =& assigns the variable to a <<i>>reference<</i>> of TinyMVC,
-		// not a copy. $this->tiny literally refers to the $tiny = new TinyMVC(); 
-		// in the system/tinyMvc.php file.
+		$this->tiny = TinyMVC::get_instance();
 		
-		$this->tiny =& TinyMVC::get_instance();
 	}
 	
 	/**

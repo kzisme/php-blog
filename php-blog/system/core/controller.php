@@ -1,26 +1,58 @@
 <?php if( !defined("BASE_DIR") ) exit("No Direct Script Access Allowed");
 
-// TO-DO: Document class
+/**
+ * Controller Class. Handles Loading the Correct Model and View.
+ * 
+ * Eventually will need to extend this in application controllers.
+ * 
+ * @author kzisme
+ * @since 1.0
+ * 
+ * @package TinyMVC
+ * 
+ */
 
 class Controller {
-	private $load;
-	private $model;
+	
+	/**
+	 * The Loader class for loading all views, helpers and models, and more
+	 * 
+	 * @var Load $load
+	 * @access private
+	 */
+	
+	private $load = null;
+	
+	/**
+	 * Data Array for data that gets expanded
+	 *
+	 * @var array $data
+	 * @access private
+	 */
+	 
+	private $data = array();
+	
+	
 
 	public function __construct()
 	{
 		$this->load = new Load();
-		$this->model = new Model();
 
 		//determines what page you're on
 		$this->home();
 	}
+	
+	
 
 	public function home()
 	{
-		$data = $this->model->user_info();
+		$this->data = array(
+			'title' => "My First Dynamic View",
+			'author' => 'Kyle Keiper'
+		);
 		
 		$this->load->helper("url");
-		$this->load->view("someview", $data);
+		$this->load->view("someview", $this->data);
 	}
 	
 	

@@ -1,6 +1,6 @@
 <?php if( !defined("BASE_DIR") ) exit("No Direct Script Access Allowed");
 
-/*
+/**
  * @package TinyMVC
  * 
  * @author Kyle Keiper <kkeiper1103@gmail.com>
@@ -11,7 +11,7 @@ require_once BASE_DIR . '/system/core/load.php';
 require_once BASE_DIR . '/system/core/model.php';
 require_once BASE_DIR . '/system/core/controller.php';
 
-/*
+/**
  * TinyMVC Singleton Class
  * 
  * @package TinyMVC
@@ -20,7 +20,7 @@ require_once BASE_DIR . '/system/core/controller.php';
 
 class TinyMVC{
 	
-	/*
+	/**
 	 * Singleton of the TinyMVC application
 	 * 
 	 * @staticvar TinyMVC
@@ -29,7 +29,7 @@ class TinyMVC{
 	 
 	private static $tiny;
 	
-	/*
+	/**
 	 * config associative array
 	 * 
 	 * @var array
@@ -38,7 +38,7 @@ class TinyMVC{
 	
 	public $config = array();
 	
-	/*
+	/**
 	 * Constructor for TinyMVC
 	 * 
 	 * @return null
@@ -51,15 +51,13 @@ class TinyMVC{
 		
 		self::$tiny = $this;
 		
-		// TO-DO: set config in it's own file under system or application
-		// this is not a good way to do it. Too tightly coupling
 		
-		$this->config['base_url'] = "http://localhost/php-blog/php-blog/";
-		$this->config['index_page'] = "index.php";
+		
+		$this->config = $this->load_config();
 		
 	}
 	
-	/*
+	/**
 	 * Launches the TinyMVC Application
 	 * 
 	 * @return null
@@ -73,7 +71,7 @@ class TinyMVC{
 		$this->cont = new Controller();
 	}
 	
-	/*
+	/**
 	 * Shows Document For Specified Status Code
 	 * 
 	 * @param int $code HTTP Status Code
@@ -88,7 +86,7 @@ class TinyMVC{
 		
 	}
 	
-	/*
+	/**
 	 * Gets the Current TinyMVC Singleton Reference
 	 * 
 	 * @return TinyMVC
@@ -102,5 +100,70 @@ class TinyMVC{
 		
 		return self::$tiny;
 	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
+	
+	private function load_config(){
+		include_once BASE_DIR . "/application/config/config.php";
+		global $config;
+		
+		$this->config = $config;
+		
+		// remove gloabl $config variable
+		unset($config);
+	}
+	
+	/**
+	 * Config function. Does different stuff based on number of arguments given
+	 * 
+	 * @param String $key Gets or set the given key
+	 * @param String|int|object $value Sets the given Key
+	 * 
+	 * @return instanceof $key | boolean
+	 */
+	 
+	 public function config( $key = null, $value = null ){
+	 	$num_args = func_num_args();
+		
+		$key_parts = explode("/", $key);
+		
+		switch( $num_args ){
+			case 1:
+				
+				if( sizeof($key_parts) > 1 ){
+					
+					/**
+					 * @todo implement subarray access as delimited by '/'
+					 * 
+					 * Example:
+					 * $this->config("database/dsn");
+					 * 
+					 * return $config['database']['dsn'];
+					 */
+					
+				}
+				
+				if( array_key_exists($key, $this->config) ){
+					return $this->config[$key];
+				}
+				else {
+					return false;
+				}
+				
+				break;
+			case 2:
+				$this->config[$key] = $value;
+				return true;
+				break;
+			default:
+				break;
+		}
+	 	
+	 }
 	
 }

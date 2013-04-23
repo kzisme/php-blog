@@ -1,6 +1,6 @@
 <?php if( !defined("BASE_DIR") ) exit("No Direct Script Access Allowed");
 
-/*
+/**8
  * @package TinyMVC
  * 
  * @author kzisme
@@ -10,7 +10,7 @@
 
 class Load{
 	
-	/*
+	/***
 	 * @tiny Reference to the TinyMVC class that was loaded
 	 * 
 	 * @author Kyle Keiper
@@ -20,15 +20,11 @@ class Load{
 	
 	public function __construct(){
 		
-		// set tiny to the instance of the TinyMVC loaded earlier
-		// =& assigns the variable to a <<i>>reference<</i>> of TinyMVC,
-		// not a copy. $this->tiny literally refers to the $tiny = new TinyMVC(); 
-		// in the system/tinyMvc.php file.
+		$this->tiny = TinyMVC::get_instance();
 		
-		$this->tiny =& TinyMVC::get_instance();
 	}
 	
-	/*
+	/**
 	 * Loads the specified view file located at /application/views/$file_name
 	 * 
 	 * @param string $file_name Name of View to be loaded
@@ -56,8 +52,27 @@ class Load{
 		
 	}
 	
-	/*
+	/**
+	 * Loads the specified Model file located at /application/models/$model
+	 * @since 1.0
+	 * 
+	 * @param string $model Name of the Model to be loaded
+	 * @return null
+	 */
+	 
+	 public function model( $model ){
+	 	
+		$file = BASE_DIR . "/application/models/{$model}.php";
+		
+		if( file_exists($file) ){
+			include_once( $file );
+		}
+		
+	 }
+	
+	/**
 	 * Loads the specified Helper file located at /system/helpers/$helper
+	 * And then loads the same helper file at /application/helpers
 	 * 
 	 * @since 1.0
 	 * 
@@ -67,11 +82,16 @@ class Load{
 	
 	public function helper( $helper ){
 		
-		$file = BASE_DIR . "/system/helpers/{$helper}.php";	
-			
+		$file = BASE_DIR . "/system/helpers/{$helper}.php";
 		if( file_exists($file) ){
 			include_once( $file );
 		}
+		
+		$file = BASE_DIR . "/application/helpers/{$helper}.php";
+		if( file_exists($file) ){
+			include_once( $file );
+		} 
+		
 	}
 }
 
